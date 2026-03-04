@@ -6,6 +6,78 @@
 (function () {
   'use strict';
 
+  // ── 0. Custom Cursor Logic ───────────────────────────────
+  const cursorDot = document.getElementById('cursor-dot');
+  const cursorRing = document.getElementById('cursor-ring');
+  let mouseX = 0, mouseY = 0;
+  let dotX = 0, dotY = 0;
+  let ringX = 0, ringY = 0;
+  let lastX = 0, lastY = 0;
+  let isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+  if (!isMobile) {
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      // Fast movement detection for trail
+      const dx = mouseX - lastX;
+      const dy = mouseY - lastY;
+      const speed = Math.sqrt(dx * dx + dy * dy);
+      if (speed > 15) {
+        createTrail(mouseX, mouseY);
+      }
+      lastX = mouseX;
+      lastY = mouseY;
+    });
+
+    function createTrail(x, y) {
+      const trail = document.createElement('div');
+      trail.className = 'cursor-trail';
+      trail.style.left = x + 'px';
+      trail.style.top = y + 'px';
+      document.body.appendChild(trail);
+
+      setTimeout(() => {
+        trail.style.opacity = '0';
+        trail.style.transform = 'translate(-50%, -50%) scale(0.1)';
+        setTimeout(() => trail.remove(), 300);
+      }, 50);
+    }
+
+    function animateCursor() {
+      // Smooth following
+      dotX += (mouseX - dotX) * 0.2;
+      dotY += (mouseY - dotY) * 0.2;
+      ringX += (mouseX - ringX) * 0.1;
+      ringY += (mouseY - ringY) * 0.1;
+
+      if (cursorDot) {
+        cursorDot.style.left = dotX + 'px';
+        cursorDot.style.top = dotY + 'px';
+      }
+      if (cursorRing) {
+        cursorRing.style.left = ringX + 'px';
+        cursorRing.style.top = ringY + 'px';
+      }
+
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Hover detection for interactive elements
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest('a, button, .row-header, .btn-live-at')) {
+        document.body.classList.add('cursor-active');
+      }
+    });
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest('a, button, .row-header, .btn-live-at')) {
+        document.body.classList.remove('cursor-active');
+      }
+    });
+  }
+
   // ── 1. Preloader ─────────────────────────────────────────
   const preloader = document.getElementById('preloader');
   const preloaderBar = document.getElementById('preloader-bar');
@@ -207,9 +279,12 @@
   }
 
 
-  // ── 4. Nav Scroll Shrink + Scroll-Spy ───────────────────
+  // ── 4. Nav Scroll Shrink + Scroll-Spy (Observer) ────────
   const navWrapper = document.getElementById('nav-wrapper');
   const navLinks = document.querySelectorAll('.nav-links a');
+  const navLogo = document.getElementById('nav-logo-trigger');
+
+  let currentActiveLink = null;
 
   // Map each nav link href → the DOM section it points to
   const sections = [];
@@ -217,54 +292,273 @@
     const href = link.getAttribute('href');
     if (!href || href.startsWith('mailto')) return;
     const id = href.replace('#', '').trim();
-    const el = id ? document.getElementById(id) : document.getElementById('home');
+    const el = id ? document.getElementById(id) : (href === '#' ? document.getElementById('home') : null);
     if (el) sections.push({ link, el });
   });
 
-  function setActiveLink(activeLink) {
-    navLinks.forEach(l => l.classList.remove('active'));
-    if (activeLink) activeLink.classList.add('active');
-  }
+  const observerOptions = {
+    threshold: 0.5,
+    rootMargin: "-10% 0px -40% 0px"
+  };
 
-  let ticking = false;
+  const observer = new IntersectionObserver((entries) => {
+    // If at the very top, target the Home link
+    if (window.scrollY < 100) {
+      const homeLink = document.querySelector('.nav-links a[href="#"]') || document.querySelector('.nav-links a[href="#home"]');
+      if (homeLink) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        homeLink.classList.add('active');
+        currentActiveLink = homeLink;
+      }
+      return;
+    }
 
-  function onScroll() {
-    const scrollY = window.scrollY;
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        const activeLink = document.querySelector(`.nav-links a[href="#${id}"]`) ||
+          (id === 'home' ? document.querySelector('.nav-links a[href="#"]') : null);
 
-    // Shrink nav
-    navWrapper.classList.toggle('scrolled', scrollY > 60);
-
-    // Scroll-spy: find the section whose top is closest to (and above) the viewport midpoint
-    const viewMid = scrollY + window.innerHeight * 0.35;
-    let bestLink = null;
-    let bestBottom = -Infinity;
-
-    sections.forEach(({ link, el }) => {
-      const top = el.offsetTop;
-      const bottom = top + el.offsetHeight;
-      if (top <= viewMid && bottom > bestBottom) {
-        bestBottom = bottom;
-        bestLink = link;
+        if (activeLink && activeLink !== currentActiveLink) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          activeLink.classList.add('active');
+          currentActiveLink = activeLink;
+        }
       }
     });
+  }, observerOptions);
 
-    setActiveLink(bestLink);
-    ticking = false;
-  }
+  sections.forEach(({ el }) => observer.observe(el));
 
   window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(onScroll);
-      ticking = true;
+    const scrolled = window.scrollY > 60;
+    navWrapper.classList.toggle('scrolled', scrolled);
+
+    // Force Home state if at top
+    if (window.scrollY < 100) {
+      const homeLink = document.querySelector('.nav-links a[href="#"]') || document.querySelector('.nav-links a[href="#home"]');
+      if (homeLink) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        homeLink.classList.add('active');
+        currentActiveLink = homeLink;
+      }
     }
   }, { passive: true });
 
-  // Run once on load to set initial active state
-  onScroll();
+  window.addEventListener('resize', () => {
+    // No JS required for underline resize
+  });
+
+  // Initial state check
+  setTimeout(() => {
+    // CSS handles initial active state glint
+  }, 100);
 
 
   // ── 5. Init ──────────────────────────────────────────────
   renderProjects();
   attachAccordionListeners();
+
+  // ── 6. Contact Modal Logic ──────────────────────────────
+  const modal = document.getElementById('contact-modal');
+  const modalClose = document.getElementById('modal-close');
+  const modalOverlay = document.getElementById('modal-overlay');
+  const contactTriggers = [
+    document.getElementById('nav-contact-trigger'),
+    document.getElementById('contact-trigger')
+  ];
+  const contactForm = document.getElementById('contact-form');
+
+  function openModal(e) {
+    if (e) e.preventDefault();
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  contactTriggers.forEach(trigger => {
+    if (trigger) trigger.addEventListener('click', openModal);
+  });
+
+  if (modalClose) modalClose.addEventListener('click', closeModal);
+  if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
+
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const subject = encodeURIComponent(document.getElementById('subject').value);
+      const message = encodeURIComponent(document.getElementById('message').value);
+      window.location.href = `mailto:vedantbondekar@gmail.com?subject=${subject}&body=${message}`;
+      closeModal();
+      contactForm.reset();
+    });
+  }
+
+  // Handle Escape key for modal
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      closeModal();
+    }
+  });
+
+  // ── 7. Interactive Hero Playground (Constellation Grid) ──
+  const canvas = document.getElementById('hero-canvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let nodes = [];
+    let mouse = { x: -1000, y: -1000 };
+    let ripples = [];
+
+    class Node {
+      constructor(x, y) {
+        this.baseX = x;
+        this.baseY = y;
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+      }
+
+      update() {
+        // Subtle floating movement
+        this.baseX += this.vx;
+        this.baseY += this.vy;
+        if (this.baseX < 0 || this.baseX > canvas.width) this.vx *= -1;
+        if (this.baseY < 0 || this.baseY > canvas.height) this.vy *= -1;
+
+        // Magnetic attraction to mouse
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const maxDist = 300;
+
+        if (dist < maxDist) {
+          const force = (maxDist - dist) / maxDist;
+          this.x += dx * force * 0.04;
+          this.y += dy * force * 0.04;
+          this.glow = force;
+        } else {
+          // Return to base position more slowly for fluidity
+          this.x += (this.baseX - this.x) * 0.03;
+          this.y += (this.baseY - this.y) * 0.03;
+          this.glow = 0;
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 1.5 + (this.glow * 1.5), 0, Math.PI * 2);
+        const opacity = 0.4 + (this.glow * 0.6);
+        ctx.fillStyle = `rgba(192, 192, 192, ${opacity})`;
+        if (this.glow > 0.5) {
+          ctx.shadowBlur = 10 * this.glow;
+          ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+        } else {
+          ctx.shadowBlur = 0;
+        }
+        ctx.fill();
+        ctx.shadowBlur = 0; // Reset for performance
+      }
+    }
+
+    function initCanvas() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      nodes = [];
+      const count = Math.floor((canvas.width * canvas.height) / 8000);
+
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+
+      for (let i = 0; i < count; i++) {
+        // Center-weighted distribution
+        const angle = Math.random() * Math.PI * 2;
+        const radius = Math.sqrt(Math.random()) * (Math.min(canvas.width, canvas.height) * 0.4);
+        const x = centerX + Math.cos(angle) * radius;
+        const y = centerY + Math.sin(angle) * radius;
+        nodes.push(new Node(x, y));
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Update and draw ripples
+      ripples = ripples.filter(r => r.life > 0);
+      ripples.forEach(r => {
+        r.radius += 5;
+        r.life -= 0.02;
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(192, 192, 192, ${r.life * 0.3})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      });
+
+      // Update and draw connections
+      nodes.forEach((node, i) => {
+        node.update();
+        node.draw();
+
+        for (let j = i + 1; j < nodes.length; j++) {
+          const nodeB = nodes[j];
+          const dx = node.x - nodeB.x;
+          const dy = node.y - nodeB.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 150) {
+            ctx.beginPath();
+            ctx.moveTo(node.x, node.y);
+            ctx.lineTo(nodeB.x, nodeB.y);
+            ctx.strokeStyle = `rgba(192, 192, 192, ${(1 - dist / 150) * 0.4})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+
+      // Update CSS variables for grid glow
+      const hero = document.getElementById('home');
+      if (hero) {
+        const heroRect = hero.getBoundingClientRect();
+        hero.style.setProperty('--mouse-x', `${e.clientX - heroRect.left}px`);
+        hero.style.setProperty('--mouse-y', `${e.clientY - heroRect.top}px`);
+        hero.style.setProperty('--glow-opacity', '1');
+      }
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      mouse.x = -1000;
+      mouse.y = -1000;
+      const hero = document.getElementById('home');
+      if (hero) hero.style.setProperty('--glow-opacity', '0');
+    });
+
+    canvas.addEventListener('mousedown', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      ripples.push({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+        radius: 0,
+        life: 1
+      });
+    });
+
+    window.addEventListener('resize', initCanvas);
+    initCanvas();
+    animate();
+  }
 
 })();
