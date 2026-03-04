@@ -488,6 +488,44 @@ nav.site-nav {
     transform: translateX(3px);
 }
 
+/* ── Live At button (secondary) ───────────────────────────── */
+.detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.btn-live-at {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: border-color var(--dur), color var(--dur), transform var(--dur);
+}
+
+.btn-live-at:hover {
+    border-color: var(--accent);
+    color: var(--accent-hi);
+    transform: translateY(-1px);
+}
+
+.btn-live-at svg {
+    transition: transform var(--dur) var(--ease-out);
+}
+
+.btn-live-at:hover svg {
+    transform: translate(2px, -2px);
+}
+
 /* ── 8. About Section ─────────────────────────────────────── */
 .about-section {
     padding: 120px 7vw;
@@ -523,35 +561,103 @@ nav.site-nav {
     font-size: 0.9375rem;
 }
 
-.about-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    border: 1px solid var(--border);
+/* ── 8b. About — Photo + Quote ───────────────────────────── */
+.about-photo-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+}
+
+.about-photo-frame {
+    position: relative;
+    width: 260px;
+    flex-shrink: 0;
+}
+
+.about-photo {
+    width: 260px;
+    height: 320px;
+    object-fit: cover;
     border-radius: var(--radius-lg);
-    overflow: hidden;
-    background: var(--border);
+    border: 1px solid var(--border-hi);
+    display: block;
 }
 
-.stat-cell {
-    background: var(--bg-raised);
-    padding: 36px 32px;
+/* Fallback initials block */
+.about-photo-fallback {
+    width: 260px;
+    height: 320px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-hi);
+    background: linear-gradient(145deg, var(--surface) 0%, #111 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.stat-value {
+.about-photo-fallback span {
     font-family: 'Inter Tight', sans-serif;
     font-size: 3rem;
     font-weight: 700;
     letter-spacing: -0.04em;
-    color: var(--accent-hi);
-    line-height: 1;
-    margin-bottom: 6px;
+    color: var(--text-faint);
 }
 
-.stat-label {
-    font-size: 0.8rem;
+/* Subtle animated silver rim */
+.photo-rim {
+    position: absolute;
+    inset: -1px;
+    border-radius: calc(var(--radius-lg) + 1px);
+    background: conic-gradient(from 0deg,
+            transparent 0%,
+            rgba(192, 192, 192, 0.6) 30%,
+            transparent 60%,
+            rgba(192, 192, 192, 0.2) 80%,
+            transparent 100%);
+    mask: linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: destination-out;
+    padding: 1px;
+    animation: rim-spin 6s linear infinite;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+@keyframes rim-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.about-quote {
+    text-align: center;
+    padding: 0 8px;
+    border: none;
+}
+
+.quote-text {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+    font-style: italic;
+    color: var(--accent);
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    margin-bottom: 12px;
+}
+
+.quote-cite {
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: var(--text-muted);
-    letter-spacing: 0.05em;
 }
 
 /* ── 9. Footer ────────────────────────────────────────────── */
@@ -593,7 +699,114 @@ footer.site-footer {
     overflow: hidden;
 }
 
-/* ── 11. Responsive ───────────────────────────────────────── */
+/* ── 11. Preloader ────────────────────────────────────────── */
+#preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.6s var(--ease-out), visibility 0.6s var(--ease-out);
+}
+
+#preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.preloader-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(192, 192, 192, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(192, 192, 192, 0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+}
+
+/* Moving horizontal scanline */
+.preloader-scanline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.25) 40%, rgba(255, 255, 255, 0.5) 50%, rgba(192, 192, 192, 0.25) 60%, transparent);
+    animation: scan 2.5s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scan {
+    from {
+        top: 0;
+    }
+
+    to {
+        top: 100%;
+    }
+}
+
+.preloader-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    position: relative;
+    z-index: 1;
+}
+
+.preloader-logo {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--accent-hi);
+    animation: pl-fade 1.2s var(--ease-out) both;
+}
+
+@keyframes pl-fade {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.preloader-bar-wrap {
+    width: clamp(180px, 28vw, 320px);
+    height: 1px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+}
+
+.preloader-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-hi));
+    transition: width 0.1s linear;
+    box-shadow: 0 0 12px rgba(192, 192, 192, 0.6);
+}
+
+.preloader-status {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    animation: pl-fade 1.4s var(--ease-out) both;
+}
+
+/* ── 12. Responsive ───────────────────────────────────────── */
 @media (max-width: 768px) {
     .projects-header {
         display: none;

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vedant — Creative Developer & UI Architect</title>
+    <title>Portfolio</title>
     <meta name="description"
         content="Portfolio of Vedant — a Senior Creative Developer &amp; UI Architect specialising in precision-engineered digital products." />
     <meta property="og:title" content="Vedant — Creative Developer & UI Architect" />
@@ -16,6 +16,19 @@
 </head>
 
 <body>
+
+    <!-- ── Preloader ── -->
+    <div id="preloader" aria-hidden="true">
+        <div class="preloader-inner">
+            <div class="preloader-logo">VB —</div>
+            <div class="preloader-bar-wrap">
+                <div class="preloader-bar" id="preloader-bar"></div>
+            </div>
+            <span class="preloader-status" id="preloader-status">Initialising</span>
+        </div>
+        <div class="preloader-grid" aria-hidden="true"></div>
+        <div class="preloader-scanline" aria-hidden="true"></div>
+    </div>
 
     <!-- ── Floating Island Nav ── -->
     <div class="nav-wrapper" id="nav-wrapper">
@@ -34,8 +47,7 @@
     <header class="hero" id="home">
         <div class="hero-grid-overlay" aria-hidden="true"></div>
         <div class="hero-gradient" aria-hidden="true"></div>
-        <p class="hero-eyebrow">Available for select projects · 2025</p>
-        <h1 class="hero-heading">Precision<br /><em>Engineered</em><br />Interfaces.</h1>
+        <h1 class="hero-heading">Build<br /><em>Break</em><br />Interfaces.</h1>
         <p class="hero-sub">
             Senior Creative Developer crafting high-performance digital
             products — from design systems to 3D installations.
@@ -78,23 +90,22 @@
                 to every engagement.
             </p>
         </div>
-        <div class="about-stats" aria-label="Key stats">
-            <div class="stat-cell">
-                <div class="stat-value">5+</div>
-                <div class="stat-label">Years Experience</div>
+        <!-- Photo + Quote -->
+        <div class="about-photo-col">
+            <div class="about-photo-frame">
+                <!-- Replace src with your actual photo. Keep filename as photo.jpg in assets/img/ -->
+                <img src="./assets/img/photo.jpg" alt="Vedant" class="about-photo"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+                <!-- Shown if photo is missing -->
+                <div class="about-photo-fallback">
+                    <span>VB</span>
+                </div>
+                <div class="photo-rim" aria-hidden="true"></div>
             </div>
-            <div class="stat-cell">
-                <div class="stat-value">32</div>
-                <div class="stat-label">Projects Shipped</div>
-            </div>
-            <div class="stat-cell">
-                <div class="stat-value">18</div>
-                <div class="stat-label">Clients Served</div>
-            </div>
-            <div class="stat-cell">
-                <div class="stat-value">04</div>
-                <div class="stat-label">Awards Won</div>
-            </div>
+            <blockquote class="about-quote">
+                <p class="quote-text">"Any sufficiently crafted interface<br />is indistinguishable from art."</p>
+                <cite class="quote-cite">— Vedant</cite>
+            </blockquote>
         </div>
     </section>
 
