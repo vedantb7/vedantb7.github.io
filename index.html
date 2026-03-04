@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vedant — Creative Developer & UI Architect</title>
+    <meta name="description"
+        content="Portfolio of Vedant — a Senior Creative Developer &amp; UI Architect specialising in precision-engineered digital products." />
+    <meta property="og:title" content="Vedant — Creative Developer & UI Architect" />
+    <meta property="og:description" content="Precision-engineered digital products. Web, Mobile, Brand, Motion." />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="./assets/css/index.css" />
+</head>
+
+<body>
+
+    <!-- ── Floating Island Nav ── -->
+    <div class="nav-wrapper" id="nav-wrapper">
+        <nav class="site-nav" aria-label="Main navigation">
+            <span class="nav-logo">VB —</span>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#projects">Work</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="mailto:vedant@example.com">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- ── Hero ── -->
+    <header class="hero" id="home">
+        <div class="hero-grid-overlay" aria-hidden="true"></div>
+        <div class="hero-gradient" aria-hidden="true"></div>
+        <p class="hero-eyebrow">Available for select projects · 2025</p>
+        <h1 class="hero-heading">Precision<br /><em>Engineered</em><br />Interfaces.</h1>
+        <p class="hero-sub">
+            Senior Creative Developer crafting high-performance digital
+            products — from design systems to 3D installations.
+        </p>
+        <div class="hero-cta-row">
+            <a href="#projects" class="btn-primary">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M8 3v10M3 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                View Work
+            </a>
+            <span class="hero-scroll-hint">Scroll to explore</span>
+        </div>
+    </header>
+
+    <!-- ── Projects ── -->
+    <section class="projects-section" id="projects" aria-label="Selected work">
+        <div class="projects-header" aria-hidden="true">
+            <span>#</span>
+            <span>Project</span>
+            <span>Category</span>
+            <span>Year</span>
+            <span></span>
+        </div>
+        <!-- Rows are injected by index.js -->
+        <div id="projects-list"></div>
+    </section>
+
+    <!-- ── About ── -->
+    <section class="about-section" id="about" aria-label="About">
+        <div class="about-copy">
+            <p class="about-label">About</p>
+            <h2 class="about-heading">Craft at<br />the intersection<br />of code & design.</h2>
+            <p class="about-text">
+                I'm Vedant — a creative developer who sits at the seam between
+                engineering and art direction. With over 5 years of professional
+                experience delivering across web, mobile, and physical installations,
+                I bring an obsessive attention to detail and a systems-first mindset
+                to every engagement.
+            </p>
+        </div>
+        <div class="about-stats" aria-label="Key stats">
+            <div class="stat-cell">
+                <div class="stat-value">5+</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat-cell">
+                <div class="stat-value">32</div>
+                <div class="stat-label">Projects Shipped</div>
+            </div>
+            <div class="stat-cell">
+                <div class="stat-value">18</div>
+                <div class="stat-label">Clients Served</div>
+            </div>
+            <div class="stat-cell">
+                <div class="stat-value">04</div>
+                <div class="stat-label">Awards Won</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer class="site-footer">
+        <p class="footer-copy">© 2025 Vedant. All rights reserved.</p>
+        <nav class="footer-links" aria-label="Social links">
+            <a href="https://github.com/Vedant-VB07" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://twitter.com/" target="_blank" rel="noopener">Twitter</a>
+            <a href="mailto:vedant@example.com">Email</a>
+        </nav>
+    </footer>
+
+    <!-- Scripts (projects.js MUST load before index.js) -->
+    <script src="./assets/js/projects.js"></script>
+    <script src="./assets/js/index.js"></script>
+</body>
+
+</html>

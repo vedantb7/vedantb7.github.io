@@ -1,0 +1,360 @@
+/* ============================================================
+   Precision Silver — Case Study / Project Detail Styles
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@400;700&display=swap');
+
+/* ── Tokens (inherited subset) ────────────────────────────── */
+:root {
+    --bg: #0F0F0F;
+    --bg-raised: #141414;
+    --surface: #1C1C1C;
+    --surface-hi: #242424;
+    --border: rgba(192, 192, 192, 0.15);
+    --border-hi: rgba(192, 192, 192, 0.35);
+    --accent: #C0C0C0;
+    --accent-hi: #E5E5E5;
+    --text: #E5E5E5;
+    --text-muted: #777;
+    --text-faint: #3A3A3A;
+    --tag-bg: rgba(192, 192, 192, 0.08);
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 24px;
+    --radius-pill: 999px;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur: 0.3s;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+/* ── Detail Nav (simplified) ──────────────────────────────── */
+.detail-nav {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    width: min(720px, calc(100vw - 40px));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 24px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-hi);
+    background: rgba(15, 15, 15, 0.72);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: color var(--dur);
+}
+
+.back-btn:hover {
+    color: var(--accent-hi);
+}
+
+.back-btn svg {
+    transition: transform var(--dur) var(--ease-out);
+}
+
+.back-btn:hover svg {
+    transform: translateX(-3px);
+}
+
+.nav-logo {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: -0.02em;
+    color: var(--accent-hi);
+}
+
+/* ── Case Study Hero ──────────────────────────────────────── */
+.case-hero {
+    min-height: 70vh;
+    padding: 160px 7vw 80px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.case-hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.case-category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    background: var(--tag-bg);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    width: fit-content;
+}
+
+.case-title {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    color: var(--accent-hi);
+    margin-bottom: 28px;
+}
+
+.case-meta-row {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.case-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.case-meta-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.case-meta-value {
+    font-size: 0.9375rem;
+    color: var(--accent-hi);
+    font-weight: 500;
+}
+
+/* ── Hero Image ───────────────────────────────────────────── */
+.case-image-section {
+    padding: 0 7vw;
+}
+
+.case-image-wrap {
+    margin-top: -60px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    aspect-ratio: 16/7;
+}
+
+.case-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.case-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--surface) 0%, #111 50%, var(--bg-raised) 100%);
+}
+
+.placeholder-center svg {
+    opacity: 0.15;
+}
+
+/* ── Content ──────────────────────────────────────────────── */
+.case-content {
+    padding: 80px 7vw 120px;
+    max-width: 800px;
+}
+
+.case-content-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.case-description {
+    font-size: 1.0625rem;
+    line-height: 1.85;
+    color: var(--text-muted);
+}
+
+.case-description p+p {
+    margin-top: 1.4em;
+}
+
+/* ── Tags ─────────────────────────────────────────────────── */
+.case-tags-section {
+    padding: 0 7vw 80px;
+    border-top: 1px solid var(--border);
+    padding-top: 60px;
+}
+
+.case-tags-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+.case-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.case-tag {
+    padding: 8px 18px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    background: var(--tag-bg);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+}
+
+/* ── Footer / Next project ────────────────────────────────── */
+.case-footer {
+    border-top: 1px solid var(--border);
+    padding: 60px 7vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.btn-back-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 28px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-hi);
+    background: transparent;
+    color: var(--accent-hi);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: background var(--dur), color var(--dur), transform var(--dur);
+}
+
+.btn-back-home:hover {
+    background: var(--accent-hi);
+    color: var(--bg);
+    transform: translateY(-1px);
+}
+
+.case-footer-copy {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* ── Error / Not Found ────────────────────────────────────── */
+.error-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    text-align: center;
+    padding: 40px;
+}
+
+.error-code {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 6rem;
+    font-weight: 700;
+    color: var(--text-faint);
+    letter-spacing: -0.05em;
+}
+
+.error-msg {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .case-hero {
+        padding: 140px 6vw 60px;
+    }
+
+    .case-content {
+        padding: 60px 6vw 80px;
+    }
+
+    .case-tags-section,
+    .case-image-section,
+    .case-footer {
+        padding-left: 6vw;
+        padding-right: 6vw;
+    }
+
+    .case-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
