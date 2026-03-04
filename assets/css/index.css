@@ -173,7 +173,20 @@ nav.site-nav {
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-    transition: all var(--dur) var(--ease-out);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        backdrop-filter 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        background 0.6s ease;
+    will-change: transform, backdrop-filter;
+}
+
+/* Shrunk State: Silky Zoom Out */
+.nav-wrapper.scrolled nav.site-nav {
+    transform: scale(0.85);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    background: rgba(10, 10, 10, 0.82);
 }
 
 .nav-logo {
@@ -224,6 +237,13 @@ nav.site-nav {
 
 .nav-links a.active::after {
     transform: scaleX(1);
+}
+
+/* Sync Glint scaling when navbar is shrunk */
+.nav-wrapper.scrolled .nav-links a::after {
+    height: 1.2px;
+    /* Slightly thinner to match scale */
+    bottom: -2px;
 }
 
 .nav-links a:hover {
@@ -1005,10 +1025,80 @@ footer.site-footer {
     font-size: 0.9rem;
 }
 
-.contact-form {
+/* ── Action Hub Styling ── */
+.action-hub {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
+    margin-top: 20px;
+}
+
+.email-display {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 16px;
+    border-radius: var(--radius-sm);
+    border: 1px dashed rgba(192, 192, 192, 0.2);
+    text-align: center;
+}
+
+.email-display code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--accent-hi);
+    letter-spacing: -0.01em;
+}
+
+.hub-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.hub-buttons button,
+.hub-buttons a {
+    justify-content: center;
+    padding: 14px;
+    font-size: 0.85rem;
+}
+
+/* ── Footer Email Copy Styling ── */
+.footer-email-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.copy-tooltip {
+    position: absolute;
+    bottom: 150%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--accent-hi);
+    color: var(--bg);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s var(--ease-out);
+}
+
+.copy-tooltip.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.footer-email-link {
+    transition: color 0.3s ease;
+}
+
+.footer-email-link.copied {
+    color: #FFFFFF !important;
 }
 
 .form-group {

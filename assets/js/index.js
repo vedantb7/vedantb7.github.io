@@ -343,10 +343,13 @@
         if (targetEl) {
           e.preventDefault();
 
-          // Immediate Visual Feedback
-          navLinks.forEach(l => l.classList.remove('active'));
-          link.classList.add('active');
-          currentActiveLink = link;
+          // Skip active class swap ONLY if it's the contact trigger
+          // This keeps the Glint on Home/Work when the modal opens
+          if (link.id !== 'nav-contact-trigger') {
+            navLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            currentActiveLink = link; // Update currentActiveLink only if class is swapped
+          }
 
           // Smooth Scroll
           targetEl.scrollIntoView({ behavior: 'smooth' });
@@ -356,18 +359,25 @@
     });
   });
 
+  let isScrolling = false;
   window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY > 60;
-    navWrapper.classList.toggle('scrolled', scrolled);
+    if (!isScrolling) {
+      window.requestAnimationFrame(() => {
+        const scrolled = window.scrollY > 50; // Threshold: 50px Dead Zone
+        navWrapper.classList.toggle('scrolled', scrolled);
 
-    // Force Home state if at top
-    if (window.scrollY < 100) {
-      const homeLink = document.querySelector('.nav-links a[href="#home"]');
-      if (homeLink) {
-        navLinks.forEach(l => l.classList.remove('active'));
-        homeLink.classList.add('active');
-        currentActiveLink = homeLink;
-      }
+        // Force Home state if at top
+        if (window.scrollY < 100) {
+          const homeLink = document.querySelector('.nav-links a[href="#home"]');
+          if (homeLink) {
+            navLinks.forEach(l => l.classList.remove('active'));
+            homeLink.classList.add('active');
+            currentActiveLink = homeLink;
+          }
+        }
+        isScrolling = false;
+      });
+      isScrolling = true;
     }
   }, { passive: true });
 
@@ -385,18 +395,17 @@
   renderProjects();
   attachAccordionListeners();
 
-  // ── 6. Contact Modal Logic ──────────────────────────────
+  // ── 6. Contact Action Hub Logic ────────────────────────
   const modal = document.getElementById('contact');
   const modalClose = document.getElementById('modal-close');
   const modalOverlay = document.getElementById('modal-overlay');
-  const contactTriggers = [
-    document.getElementById('nav-contact-trigger'),
-    document.getElementById('contact-trigger')
-  ];
-  const contactForm = document.getElementById('contact-form');
+  const hubCopyBtn = document.getElementById('hub-copy-btn');
+  const navContactTrigger = document.getElementById('nav-contact-trigger');
+
+  const EMAIL_ADDRESS = 'vedantbondekar@gmail.com';
 
   function openModal(e) {
-    if (e && typeof e.preventDefault === 'function') {
+    if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
@@ -409,27 +418,71 @@
     document.body.style.overflow = '';
   }
 
-  contactTriggers.forEach(trigger => {
-    if (trigger) trigger.addEventListener('click', openModal);
-  });
-
+  if (navContactTrigger) navContactTrigger.addEventListener('click', openModal);
   if (modalClose) modalClose.addEventListener('click', closeModal);
   if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
 
-  if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+  // Modern copy with fallback
+  async function copyToClipboard(text) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+      // Fallback
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      const success = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      return success;
+    } catch (err) {
+      console.error('Copy failed:', err);
+      return false;
+    }
+  }
+
+  if (hubCopyBtn) {
+    hubCopyBtn.addEventListener('click', async () => {
+      const success = await copyToClipboard(EMAIL_ADDRESS);
+      if (success) {
+        const originalText = hubCopyBtn.textContent;
+        hubCopyBtn.textContent = 'Copied!';
+        hubCopyBtn.style.background = 'var(--accent-hi)';
+        hubCopyBtn.style.color = 'var(--bg)';
+        setTimeout(() => {
+          hubCopyBtn.textContent = originalText;
+          hubCopyBtn.style.background = '';
+          hubCopyBtn.style.color = '';
+        }, 2000);
+      }
+    });
+  }
+
+  // ── 7. Footer One-Click Copy ────────────────────────────
+  const footerEmailLink = document.getElementById('footer-email-link');
+  const copyTooltip = document.getElementById('copy-tooltip');
+
+  if (footerEmailLink) {
+    footerEmailLink.addEventListener('click', async (e) => {
       e.preventDefault();
-      const subject = encodeURIComponent(document.getElementById('subject').value);
-      const message = encodeURIComponent(document.getElementById('message').value);
-      window.location.href = `mailto:vedantbondekar@gmail.com?subject=${subject}&body=${message}`;
-      closeModal();
-      contactForm.reset();
+      const success = await copyToClipboard(EMAIL_ADDRESS);
+      if (success) {
+        footerEmailLink.classList.add('copied');
+        if (copyTooltip) copyTooltip.classList.add('active');
+
+        setTimeout(() => {
+          footerEmailLink.classList.remove('copied');
+          if (copyTooltip) copyTooltip.classList.remove('active');
+        }, 1500);
+      }
     });
   }
 
   // Handle Escape key for modal
   window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('active')) {
+    if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
       closeModal();
     }
   });
