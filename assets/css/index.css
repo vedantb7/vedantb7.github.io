@@ -1150,6 +1150,7 @@ nav.site-nav {
 /* animation: rim-spin 6s linear infinite; */
 /* pointer-events: none; */
 /* ── About Timeline (90-Degree Step Snake) ──────────────── */
+
 .about-timeline-wrap {
     grid-column: 1 / -1;
     width: 100%;
