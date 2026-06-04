@@ -5,16 +5,85 @@
  */
 const PROJECTS = [
     {
-        id: 1,
-        title: "urlX",
-        category: "Web Dev",
-        year: "2025",
-        tags: ["NextJS", "MongoDB", "Vercel"],
-        thumbnail: "./assets/img/proj-2.png",
-        summary: "urlX is a modern URL shortener built using Next.js App Router and MongoDB.",
-        description: "urlX is a modern URL shortener built using Next.js App Router and MongoDB. It converts long URLs into short, shareable links and redirects users instantly.",
-        link: "./project-detail.html?id=1",
-        liveLink: "https://urlx-s.vercel.app"
+        id: 5,
+        title: "PhishingShield",
+        category: "Cybersecurity & AI",
+        year: "2026",
+        tags: ["PyTorch", "DistilBERT", "NLP", "Machine Learning"],
+        thumbnail: "./assets/img/proj-5.png",
+        summary: "Context-aware phishing detection system using dual-channel NLP and URL intelligence.",
+        description: `Context-Aware Phishing Detection is an AI-powered cybersecurity project that combines NLP and URL analysis to identify phishing attempts.
+    
+    🚀 Features
+    
+    🎯 DistilBERT-based message analysis
+    🔗 URL feature extraction and modeling
+    🧠 Multi-task classification pipeline
+    ⚡ Ensemble scoring for improved reliability
+    📊 Risk scoring with interpretable outputs
+    
+    📈 Results
+    
+    Achieved ~75% accuracy
+    F1 Score ~0.76
+    Improved detection performance over single-modality approaches
+    
+    This system captures intent, manipulation patterns, and impersonation signals commonly found in phishing campaigns.`,
+        link: "./project-detail.html?id=5",
+        liveLink: "https://github.com/Naveen-Pal/Phishing-detector"
+    },
+    {
+        id: 7,
+        title: "FreshWash",
+        category: "Database Systems",
+        year: "2026",
+        tags: ["C++", "Python", "SQL", "Database Systems"],
+        thumbnail: "./assets/img/proj-7.png",
+        summary: "Full-stack laundry management system with a custom B+ Tree indexing engine.",
+        description: `FreshWash is a scalable laundry management platform built around a custom database engine and indexing system.
+    
+    🚀 Features
+    
+    👥 Role-Based Access Control (RBAC)
+    🔌 REST API-driven architecture
+    📦 End-to-end laundry order management
+    🌳 Custom B+ Tree indexing engine
+    🔄 ACID-compliant transaction support
+    📝 Write-Ahead Logging (WAL)
+    ⚡ Horizontal sharding and optimized indexing
+    
+    📈 Highlights
+    
+    Improved query efficiency through custom indexing
+    Implemented rollback and recovery mechanisms
+    Enabled scalable and concurrency-safe operations
+    
+    FreshWash combines full-stack application development with advanced database system concepts and storage engine design.`,
+        link: "./project-detail.html?id=7",
+        liveLink: "https://github.com/vedantb7/Database-Freshwash"
+    },
+    {
+        id: 6,
+        title: "Trado",
+        category: "Full Stack",
+        year: "2026",
+        tags: ["React", "Node.js", "Express", "MongoDB", "Socket.io"],
+        thumbnail: "./assets/img/proj-6.png",
+        summary: "Real-time campus marketplace platform with live negotiation and trust mechanisms.",
+        description: `Trado is a real-time marketplace platform designed for campus communities to buy, sell, and negotiate products securely.
+        
+        🚀 Features
+        
+        🛒 Product listing and marketplace management
+        🔐 Secure authentication and role-based access control
+        💬 Real-time messaging using Socket.io
+        🤝 Live offer and counter-offer negotiations
+        ⭐ Karma scoring and trust mechanisms
+        🛡 Moderation tools for safer transactions
+        
+        Built during HackRush '26, Trado focuses on enabling trustworthy peer-to-peer trading through real-time interactions and community-driven reputation systems.`,
+        link: "./project-detail.html?id=6",
+        liveLink: "https://trado-j935.onrender.com/"
     },
     {
         id: 2,
@@ -22,18 +91,30 @@ const PROJECTS = [
         category: "Generation Engine",
         year: "2026",
         tags: ["Rust", "Cargo", "CLI"],
-        thumbnail: "./assets/img/proj-3.png",
+        thumbnail: "./assets/img/proj-2.png",
         summary: "KYT (Know Your Target) is a high-performance, persona-driven password generation engine written in Rust.",
         description: `KYT (Know Your Target) is a high-performance, persona-driven password generation engine written in Rust.
-
-            It is designed for: \n
-            ✅ Authorized red-team simulations \n
-            ✅ Enterprise IAM password policy auditing \n
-            ✅ CTF challenge development\n 
-
-            KYT intelligently models how humans create passwords based on personal, professional, and contextual data.`,
+        
+        It is designed for: \n
+        ✅ Authorized red-team simulations \n
+        ✅ Enterprise IAM password policy auditing \n
+        ✅ CTF challenge development\n 
+        
+        KYT intelligently models how humans create passwords based on personal, professional, and contextual data.`,
         link: "./project-detail.html?id=2",
         liveLink: "https://github.com/vedantb7/kyt"
+    },
+    {
+        id: 1,
+        title: "urlX",
+        category: "Full Stack",
+        year: "2025",
+        tags: ["NextJS", "MongoDB", "Vercel"],
+        thumbnail: "./assets/img/proj-1.png",
+        summary: "urlX is a modern URL shortener built using Next.js App Router and MongoDB.",
+        description: "urlX is a modern URL shortener built using Next.js App Router and MongoDB. It converts long URLs into short, shareable links and redirects users instantly.",
+        link: "./project-detail.html?id=1",
+        liveLink: "https://urlx-s.vercel.app"
     },
     {
         id: 3,
@@ -98,87 +179,6 @@ This project is my first complete React-based application that involves state ma
         link: "./project-detail.html?id=4",
         liveLink: "https://todo-57.vercel.app"
     },
-    {
-        id: 5,
-        title: "PhishingShield",
-        category: "Cybersecurity & AI",
-        year: "2026",
-        tags: ["PyTorch", "DistilBERT", "NLP", "Machine Learning"],
-        thumbnail: "./assets/img/proj-5.png",
-        summary: "Context-aware phishing detection system using dual-channel NLP and URL intelligence.",
-        description: `Context-Aware Phishing Detection is an AI-powered cybersecurity project that combines NLP and URL analysis to identify phishing attempts.
-
-🚀 Features
-
-    🎯 DistilBERT-based message analysis
-    🔗 URL feature extraction and modeling
-    🧠 Multi-task classification pipeline
-    ⚡ Ensemble scoring for improved reliability
-    📊 Risk scoring with interpretable outputs
-
-📈 Results
-
-    Achieved ~75% accuracy
-    F1 Score ~0.76
-    Improved detection performance over single-modality approaches
-
-This system captures intent, manipulation patterns, and impersonation signals commonly found in phishing campaigns.`,
-        link: "./project-detail.html?id=5",
-        liveLink: "#"
-    },
-    {
-        id: 6,
-        title: "Trado",
-        category: "Full Stack",
-        year: "2026",
-        tags: ["React", "Node.js", "Express", "MongoDB", "Socket.io"],
-        thumbnail: "./assets/img/proj-6.png",
-        summary: "Real-time campus marketplace platform with live negotiation and trust mechanisms.",
-        description: `Trado is a real-time marketplace platform designed for campus communities to buy, sell, and negotiate products securely.
-
-🚀 Features
-
-    🛒 Product listing and marketplace management
-    🔐 Secure authentication and role-based access control
-    💬 Real-time messaging using Socket.io
-    🤝 Live offer and counter-offer negotiations
-    ⭐ Karma scoring and trust mechanisms
-    🛡 Moderation tools for safer transactions
-
-Built during HackRush '26, Trado focuses on enabling trustworthy peer-to-peer trading through real-time interactions and community-driven reputation systems.`,
-        link: "./project-detail.html?id=6",
-        liveLink: "#"
-    },
-    {
-        id: 7,
-        title: "FreshWash",
-        category: "Database Systems",
-        year: "2026",
-        tags: ["C++", "Python", "SQL", "Database Systems"],
-        thumbnail: "./assets/img/proj-7.png",
-        summary: "Full-stack laundry management system with a custom B+ Tree indexing engine.",
-        description: `FreshWash is a scalable laundry management platform built around a custom database engine and indexing system.
-
-🚀 Features
-
-    👥 Role-Based Access Control (RBAC)
-    🔌 REST API-driven architecture
-    📦 End-to-end laundry order management
-    🌳 Custom B+ Tree indexing engine
-    🔄 ACID-compliant transaction support
-    📝 Write-Ahead Logging (WAL)
-    ⚡ Horizontal sharding and optimized indexing
-
-📈 Highlights
-
-    Improved query efficiency through custom indexing
-    Implemented rollback and recovery mechanisms
-    Enabled scalable and concurrency-safe operations
-
-FreshWash combines full-stack application development with advanced database system concepts and storage engine design.`,
-        link: "./project-detail.html?id=7",
-        liveLink: "#"
-    }
 
 ]
 

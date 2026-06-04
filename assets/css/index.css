@@ -1384,20 +1384,38 @@ nav.site-nav {
 
 /* Mobile: Clean Vertical Stack for High Density */
 @media (max-width: 768px) {
+    .timeline-heading {
+        margin-bottom: 34px;
+    }
+
+    .timeline-container {
+        padding: 0 22px;
+    }
+
+    .timeline-track {
+        position: relative;
+        padding-left: 18px;
+    }
+
+    .timeline-track::before {
+        content: '';
+        position: absolute;
+        top: 6px;
+        bottom: 6px;
+        left: 0;
+        width: 1.5px;
+        background: var(--border);
+        z-index: 0;
+    }
+
     .timeline-row {
-        flex-direction: column !important;
-        align-items: flex-start;
-        padding-left: 30px;
-        margin-bottom: 0px;
+        display: block;
+        padding-left: 0;
+        margin-bottom: 0;
     }
 
     .timeline-row::before {
-        left: 4px;
-        top: 0;
-        bottom: 0;
-        width: 1px;
-        height: 100%;
-        right: auto;
+        display: none;
     }
 
     .timeline-row::after {
@@ -1407,18 +1425,45 @@ nav.site-nav {
     .timeline-item {
         width: 100%;
         text-align: left;
-        padding-bottom: 30px;
-        padding-top: 10px;
+        min-height: 0;
+        padding: 0 0 28px 22px;
     }
 
+    .timeline-row:last-child .timeline-item:last-child {
+        padding-bottom: 0;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-dot,
+    .timeline-item:nth-child(even) .timeline-dot,
     .timeline-dot {
-        left: -26px;
-        top: 16px;
-        transform: none;
+        top: 0.45rem;
+        left: -18px;
+        transform: translateX(-50%);
     }
 
+    .timeline-dot::before,
     .timeline-item.row-end::after {
         display: none !important;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content,
+    .timeline-item:nth-child(even) .timeline-content,
+    .timeline-content {
+        position: static;
+        width: auto;
+        max-width: 100%;
+        transform: none;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .timeline-date {
+        order: 1;
+    }
+
+    .timeline-text {
+        order: 2;
+        max-width: 30rem;
     }
 }
 
@@ -1772,6 +1817,10 @@ footer.site-footer {
 
     .about-photo-col {
         order: 2;
+    }
+
+    .about-timeline-wrap {
+        order: 3;
     }
 
     .hero-heading {

@@ -20,6 +20,11 @@ const TIMELINE_DATA = [
     },
     {
         year: "2024",
+        month: "August",
+        activity: "Participated in Varchas: IIT Jodhpur Sports Fest (Football)"
+    },
+    {
+        year: "2024",
         month: "December",
         activity: "Participated in Inter-IIT Sports Meet 2024 (Football)"
     },
