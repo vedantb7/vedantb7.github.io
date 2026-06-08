@@ -41,14 +41,77 @@
       </div>`;
     }
 
+    function updateMetaTags(project) {
+        // Update title
+        document.title = `${project.title} — Vedant Bondekar Portfolio`;
+        
+        // Update meta description
+        const descMeta = document.querySelector('meta[name="description"]');
+        if (descMeta) {
+            descMeta.setAttribute('content', project.summary);
+        }
+        
+        // Update OG tags
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        if (ogTitle) ogTitle.setAttribute('content', project.title);
+        
+        const ogDesc = document.querySelector('meta[property="og:description"]');
+        if (ogDesc) ogDesc.setAttribute('content', project.summary);
+        
+        const ogUrl = document.querySelector('meta[property="og:url"]');
+        if (ogUrl) ogUrl.setAttribute('content', `https://vedantb7.github.io/project-detail.html?id=${project.id}`);
+        
+        const ogImage = document.querySelector('meta[property="og:image"]');
+        if (ogImage && project.thumbnail) ogImage.setAttribute('content', `https://vedantb7.github.io${project.thumbnail}`);
+        
+        // Update Twitter tags
+        const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+        if (twitterTitle) twitterTitle.setAttribute('content', project.title);
+        
+        const twitterDesc = document.querySelector('meta[name="twitter:description"]');
+        if (twitterDesc) twitterDesc.setAttribute('content', project.summary);
+        
+        const twitterImage = document.querySelector('meta[name="twitter:image"]');
+        if (twitterImage && project.thumbnail) twitterImage.setAttribute('content', `https://vedantb7.github.io${project.thumbnail}`);
+        
+        // Update canonical URL
+        const canonical = document.querySelector('link[rel="canonical"]');
+        if (canonical) canonical.setAttribute('href', `https://vedantb7.github.io/project-detail.html?id=${project.id}`);
+        
+        // Add/Update JSON-LD structured data for this project
+        let scriptTag = document.querySelector('script[data-type="project-schema"]');
+        if (!scriptTag) {
+            scriptTag = document.createElement('script');
+            scriptTag.setAttribute('type', 'application/ld+json');
+            scriptTag.setAttribute('data-type', 'project-schema');
+            document.head.appendChild(scriptTag);
+        }
+        
+        scriptTag.textContent = JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CreativeWork",
+            "name": project.title,
+            "description": project.summary,
+            "category": project.category,
+            "datePublished": `${project.year}-01-01`,
+            "image": `https://vedantb7.github.io${project.thumbnail}`,
+            "creator": {
+                "@type": "Person",
+                "name": "Vedant Bondekar",
+                "url": "https://vedantb7.github.io"
+            },
+            "url": `https://vedantb7.github.io/project-detail.html?id=${project.id}`
+        });
+    }
+
     function renderProject(project) {
         // Build tags HTML
         const tagsHTML = project.tags
             .map(tag => `<span class="case-tag">${tag}</span>`)
             .join('');
 
-        // Update page title
-        document.title = `${project.title} — Vedant`;
+        // Update page meta tags
+        updateMetaTags(project);
 
         root.innerHTML = `
       <!-- Hero -->

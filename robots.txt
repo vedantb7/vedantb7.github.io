@@ -1,0 +1,22 @@
+# Robots.txt for vedantb7.github.io
+# Allow search engines to crawl and index the site
+
+User-agent: *
+Allow: /
+Disallow: /assets/
+Allow: /assets/css/
+Allow: /assets/img/
+Allow: /assets/js/
+
+# Specific rules for common bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap location
+Sitemap: https://vedantb7.github.io/sitemap.xml
+
+# Crawl delay (optional - adjust based on server capacity)
+Crawl-delay: 1
