@@ -16,7 +16,7 @@ const TIMELINE_DATA = [
     {
         year: "2024",
         month: "August",
-        activity: "Joined Annuity Finance Club as a Member"
+        activity: "Joined Annuity Finance Club as a General Member"
     },
     {
         year: "2024",
@@ -52,5 +52,20 @@ const TIMELINE_DATA = [
         year: "2026",
         month: "January",
         activity: "Led a Cybersecurity shortcourse for over 100+ students"
+    },
+    {
+        year: "2026",
+        month: "May",
+        activity: "Joined the Technical Council as a general member"
+    },
+    {
+        year: "2026",
+        month: "June",
+        activity: "Joined the Academic Council as CR and Course Feedback Coordinator"
+    },
+    {
+        year: "2026",
+        month: "July",
+        activity: "Selected as a Student Guide for the 2026-27 academic year"
     },
 ]
