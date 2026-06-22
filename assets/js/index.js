@@ -286,6 +286,12 @@
   const navLinks = document.querySelectorAll('.nav-links a');
   const navLogo = document.getElementById('nav-logo-trigger');
 
+  if (navLogo) {
+    navLogo.addEventListener('click', () => {
+      document.body.classList.toggle('light-theme');
+    });
+  }
+
   let currentActiveLink = null;
 
   // Map each nav link href → the DOM section it points to
@@ -860,14 +866,14 @@
         }
       }
 
-      draw() {
+      draw(pColor, sColor) {
         ctx.beginPath();
         ctx.arc(this.x, this.y, 1.5 + (this.glow * 1.5), 0, Math.PI * 2);
         const opacity = 0.4 + (this.glow * 0.6);
-        ctx.fillStyle = `rgba(192, 192, 192, ${opacity})`;
+        ctx.fillStyle = `rgba(${pColor}, ${opacity})`;
         if (this.glow > 0.5) {
           ctx.shadowBlur = 10 * this.glow;
-          ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+          ctx.shadowColor = sColor;
         } else {
           ctx.shadowBlur = 0;
         }
@@ -896,6 +902,10 @@
     }
 
     function animate() {
+      const isLight = document.body.classList.contains('light-theme');
+      const pColor = isLight ? '60, 60, 60' : '192, 192, 192';
+      const sColor = isLight ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.5)';
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw ripples
@@ -905,7 +915,7 @@
         r.life -= 0.02;
         ctx.beginPath();
         ctx.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(192, 192, 192, ${r.life * 0.3})`;
+        ctx.strokeStyle = `rgba(${pColor}, ${r.life * 0.3})`;
         ctx.lineWidth = 1;
         ctx.stroke();
       });
@@ -913,7 +923,7 @@
       // Update and draw connections
       nodes.forEach((node, i) => {
         node.update();
-        node.draw();
+        node.draw(pColor, sColor);
 
         for (let j = i + 1; j < nodes.length; j++) {
           const nodeB = nodes[j];
@@ -925,7 +935,7 @@
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(nodeB.x, nodeB.y);
-            ctx.strokeStyle = `rgba(192, 192, 192, ${(1 - dist / 150) * 0.4})`;
+            ctx.strokeStyle = `rgba(${pColor}, ${(1 - dist / 150) * 0.4})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
