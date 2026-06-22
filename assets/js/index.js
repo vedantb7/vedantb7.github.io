@@ -640,11 +640,76 @@
     container.appendChild(fragment);
   }
 
+  // ── 8b. Mobile: Collapsible Skills View ──────────────────
+  function initCollapsibleSkills() {
+    const categoriesContainer = document.getElementById('skills-categories');
+    if (!categoriesContainer) return;
+
+    // Get unique categories (Tier 2)
+    const categories = SKILLS.filter(s => s.level === 1);
+    
+    categoriesContainer.innerHTML = '';
+
+    categories.forEach(category => {
+      // Get skills under this category
+      const skills = SKILLS.filter(s => s.parent === category.id);
+      
+      const categoryEl = document.createElement('div');
+      categoryEl.className = 'skill-category';
+      categoryEl.setAttribute('data-group', category.id);
+
+      const headerEl = document.createElement('div');
+      headerEl.className = 'skill-category-header';
+      headerEl.innerHTML = `
+        <div class="skill-category-title">
+          <div class="skill-category-icon"></div>
+          <span>${category.name}</span>
+        </div>
+        <div class="skill-category-toggle">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 10 13 14 9"></polyline>
+          </svg>
+        </div>
+      `;
+
+      const skillsEl = document.createElement('div');
+      skillsEl.className = 'skill-category-skills';
+      
+      const listEl = document.createElement('div');
+      listEl.className = 'skill-list';
+      
+      skills.forEach(skill => {
+        const tagEl = document.createElement('span');
+        tagEl.className = 'skill-tag';
+        tagEl.textContent = skill.name;
+        listEl.appendChild(tagEl);
+      });
+
+      skillsEl.appendChild(listEl);
+      categoryEl.appendChild(headerEl);
+      categoryEl.appendChild(skillsEl);
+
+      // Toggle functionality
+      headerEl.addEventListener('click', () => {
+        categoryEl.classList.toggle('active');
+      });
+
+      categoriesContainer.appendChild(categoryEl);
+    });
+
+    // Open first category by default on mobile
+    const firstCategory = categoriesContainer.querySelector('.skill-category');
+    if (firstCategory) {
+      firstCategory.classList.add('active');
+    }
+  }
+
   // ── 9. Init All ──────────────────────────────────────────
   function init() {
     renderProjects();
     attachAccordionListeners();
     initSkillsGraph();
+    initCollapsibleSkills();
     renderTimeline();
 
     setTimeout(() => {

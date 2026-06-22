@@ -715,7 +715,165 @@ nav.site-nav {
     opacity: 0.5;
 }
 
-/* Mobile Fallback: Bento Grid */
+/* ── Mobile: Collapsible Skills View ────────────────────── */
+.skills-section {
+    display: none;
+    padding: 120px 7vw;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: transparent;
+    overflow: hidden;
+}
+
+.skills-section-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.skills-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+.skills-heading {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--accent-hi);
+    line-height: 1.1;
+    margin-bottom: 48px;
+}
+
+.skills-collapsible-view {
+    display: none;
+    width: 100%;
+}
+
+.skills-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.skill-category {
+    border: 1px solid var(--border-hi);
+    border-radius: var(--radius-md);
+    background: rgba(20, 20, 20, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    overflow: hidden;
+    transition: all 0.3s var(--ease-out);
+}
+
+.skill-category.active {
+    background: rgba(25, 25, 25, 0.8);
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(192, 192, 192, 0.1);
+}
+
+.skill-category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s var(--ease-out);
+}
+
+.skill-category-header:hover {
+    background: rgba(30, 30, 30, 0.6);
+}
+
+.skill-category.active .skill-category-header {
+    background: rgba(35, 35, 35, 0.8);
+}
+
+.skill-category-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent-hi);
+}
+
+.skill-category-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    transition: transform 0.3s var(--ease-out);
+}
+
+.skill-category[data-group="programming"] .skill-category-icon {
+    background: #1A3A4A;
+}
+
+.skill-category[data-group="tools"] .skill-category-icon {
+    background: #063A26;
+}
+
+.skill-category[data-group="security"] .skill-category-icon {
+    background: #4A1A1A;
+}
+
+.skill-category-toggle {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s var(--ease-out);
+    color: var(--text-muted);
+}
+
+.skill-category.active .skill-category-toggle {
+    transform: rotate(180deg);
+    color: var(--accent-hi);
+}
+
+.skill-category-skills {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s var(--ease-out), padding 0.3s var(--ease-out);
+}
+
+.skill-category.active .skill-category-skills {
+    max-height: 500px;
+    padding: 0 20px 16px;
+}
+
+.skill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-tag {
+    display: inline-block;
+    padding: 6px 12px;
+    background: rgba(192, 192, 192, 0.08);
+    border: 1px solid rgba(192, 192, 192, 0.15);
+    border-radius: var(--radius-pill);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+}
+
+.skill-tag:hover {
+    background: rgba(192, 192, 192, 0.15);
+    border-color: rgba(192, 192, 192, 0.35);
+    color: var(--accent-hi);
+}
+
+/* Mobile Fallback: Bento Grid (Hidden by default) */
 .bento-grid {
     display: none;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -1030,11 +1188,37 @@ nav.site-nav {
     }
 
     #skills-graph-container {
-        display: none;
+        height: 500px;
     }
 
     .bento-grid {
         display: grid;
+    }
+}
+
+/* Mobile: Switch to Collapsible Skills View */
+@media (max-width: 768px) {
+    .skills-section {
+        display: block;
+    }
+
+    .skills-collapsible-view {
+        display: block;
+    }
+
+    #skills-graph-container {
+        display: none;
+    }
+}
+
+/* Small mobile: Optimize for very small screens */
+@media (max-width: 480px) {
+    .skills-section {
+        padding: 80px 5vw;
+    }
+
+    .skills-heading {
+        margin-bottom: 32px;
     }
 }
 
